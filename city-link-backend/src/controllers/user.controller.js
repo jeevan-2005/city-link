@@ -2,15 +2,15 @@ import User from "../models/user.model.js";
 import AppError from "../utils/error.utils.js";
 
 const cookieOptions = {
-    maxAge: 7*24*60*60*1000 , // 7days
-    httpOnly: true,
-    sameSite: "lax",
-    secure: false,
-}
+  maxAge: 7 * 24 * 60 * 60 * 1000, // 7days
+  httpOnly: true,
+  sameSite: "lax",
+  secure: false,
+};
 
-const register = async (req,res,next) => {
-    try{
-    const { fullName , email , password, mobileNumber} = req.body;
+const register = async (req, res, next) => {
+  try {
+    const { fullName, email, password, mobileNumber } = req.body;
 
     if (!fullName || !email || !password || !mobileNumber) {
       return next(new AppError("All field are required"));
@@ -35,6 +35,7 @@ const register = async (req,res,next) => {
 
     await user?.save();
 
+    user.password = undefined;
     const token = await user.generateJWTToken();
 
     res.cookie("token", token, cookieOptions);
@@ -66,7 +67,7 @@ const login = async (req, res, next) => {
     }
 
     const token = await user.generateJWTToken();
-
+    user.password = undefined;
     res.cookie("token", token, cookieOptions);
 
     res.status(200).json({
