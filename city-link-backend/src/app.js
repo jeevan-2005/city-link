@@ -4,6 +4,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import  userRoutes  from "./routes/user.routes.js";
 import cors from "cors";
+import errorMiddleware from "./middlewares/error.middleware.js";
 
 export const app = express();
 
@@ -29,3 +30,5 @@ app.get("/health-check", (req, res, next) => {
     message: "Health-Check : server is running fine.",
   });
 });
+
+app.use(errorMiddleware);
