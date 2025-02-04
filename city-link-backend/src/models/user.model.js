@@ -22,6 +22,11 @@ const userSchema = new Schema(
       minLength: [8, "Password must be at least 8 char"],
       select: false,
     },
+    mobileNumber: {
+      type: String,
+      required: [true, "Mobile Number is required."],
+      unique: [true, "already registered"],
+    },
     role: {
       type: "String",
       enum: ["USER", "ADMIN", "SUPERADMIN"],
@@ -30,19 +35,16 @@ const userSchema = new Schema(
     forgotPasswordToken: {
       type: String,
     },
-
     forgotPasswordExpiryDate: {
       type: Date,
-    },
-    subscription: {
-      id: String,
-      status: String,
     },
   },
   {
     timestamps: true,
   }
 );
+
+
 
 const User = model("User", userSchema);
 
