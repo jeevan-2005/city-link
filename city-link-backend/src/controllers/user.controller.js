@@ -8,6 +8,7 @@ const cookieOptions = {
 }
 
 const register = async (req,res,next) => {
+    try{
     const { fullName , email , password, mobileNumber} = req.body;
 
     if (!fullName || !email || !password || !mobileNumber) {
