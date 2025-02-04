@@ -4,7 +4,8 @@ import AppError from "../utils/error.utils.js";
 const cookieOptions = {
     maxAge: 7*24*60*60*1000 , // 7days
     httpOnly: true,
-    secure: true
+    sameSite: "lax",
+    secure: false,
 }
 
 const register = async (req,res,next) => {
@@ -70,7 +71,7 @@ const login = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: "User loggedin successfully",
+      message: "User logged-in successfully",
       user,
     });
   } catch (error) {
