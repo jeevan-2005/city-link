@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-
+import AppError from "../utils/error.utils.js";
 
 const register = async (req,res,next) => {
     const { fullName , email , password} = req.body;
