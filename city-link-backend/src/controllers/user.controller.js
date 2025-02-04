@@ -2,13 +2,13 @@ import User from "../models/user.model.js";
 import AppError from "../utils/error.utils.js";
 
 const register = async (req,res,next) => {
-    const { fullName , email , password} = req.body;
+    const { fullName , email , password, mobileNumber} = req.body;
 
-    if(!fullName || !email || !password){
+    if(!fullName || !email || !password || !mobileNumber){
         return next(new AppError('All field are required'))
     }
 
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ mobileNumber });
 
     if(userExists){
         return next(new AppError('Email already exists' ,400));
@@ -18,15 +18,14 @@ const register = async (req,res,next) => {
         fullName,
         email,
         password,
+        mobileNumber
     });
 
     if(!user){
         return next(new AppError('User registration failed , please try again'))
     }
 
-    await user.save();
-
-    user.password = undefined;
+    await user?.save();
 
     const token = await user.generateJWTToken();
 
@@ -36,9 +35,7 @@ const register = async (req,res,next) => {
         success: true,
         message: 'User registered successfully',
         user,
-        
     })
-    // console.log("Hello");
 };
 
 const login= async (req,res,next) => {
