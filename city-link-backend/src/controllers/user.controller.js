@@ -1,9 +1,14 @@
 import User from "../models/user.model.js";
 import AppError from "../utils/error.utils.js";
 
-const register = async (req, res, next) => {
-  try {
-    const { fullName, email, password, mobileNumber } = req.body;
+const cookieOptions = {
+    maxAge: 7*24*60*60*1000 , // 7days
+    httpOnly: true,
+    secure: true
+}
+
+const register = async (req,res,next) => {
+    const { fullName , email , password, mobileNumber} = req.body;
 
     if (!fullName || !email || !password || !mobileNumber) {
       return next(new AppError("All field are required"));
