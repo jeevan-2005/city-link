@@ -3,6 +3,7 @@ dotenv.config();
 import express from "express";
 import cookieParser from "cookie-parser";
 import  userRoutes  from "./routes/user.routes.js";
+import busRoutes  from "./routes/bus.routes.js";
 import cors from "cors";
 import errorMiddleware from "./middlewares/error.middleware.js";
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(morgan('dev'));
 // routes
 app.use('/api/v1/user', userRoutes);
+app.use("/api/v1/bus", busRoutes);
 
 app.get("/health-check", (req, res, next) => {
   res.status(200).json({
