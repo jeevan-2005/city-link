@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import AppError from "../utils/error.utils";
+import AppError from "../utils/error.utils.js";
 
 export const isAuth = async (req, _res, next) => {
   const access_token = req.cookies.access_token;
