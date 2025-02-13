@@ -30,7 +30,7 @@ const userSchema = new Schema(
     },
     role: {
       type: "String",
-      enum: ["USER", "ADMIN", "SUPERADMIN"],
+      enum: ["USER", "ADMIN", "SUPER-ADMIN"],
       default: "USER",
     },
     forgotPasswordToken: {
