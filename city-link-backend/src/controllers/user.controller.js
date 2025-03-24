@@ -58,11 +58,16 @@ const login = async (req, res, next) => {
       return next(new AppError("All fields are required", 400));
     }
 
-    const user = await User.findOne({
-      email,
-    }).select("+password");
+    const user = await User.findOne({ email }).select("+password");
 
-    if (!user || !user.comparePassword(password)) {
+    if (!user) {
+      return next(new AppError("Email or password does not match", 400));
+    }
+
+    // Await the comparePassword method
+    const isPasswordValid = await user.comparePassword(password);
+
+    if (!isPasswordValid) {
       return next(new AppError("Email or password does not match", 400));
     }
 
