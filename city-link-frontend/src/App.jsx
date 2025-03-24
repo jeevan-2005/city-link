@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Register from "./Components/Register";
+import Login from "./Components/Login";
+import ProtectedRoute from "./Components/ProtectedComponent";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import Dashboard from "./Components/Dashboard";
+import store from "./redux/store";
+import { useGetUserQuery } from "./redux/api/authApi";
+import { Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { data: user, isLoading, isError, isSuccess } = useGetUserQuery(); // Fetch user data
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isSuccess && user) {
+      navigate("/");
+    }
+
+    if (isError) {
+      navigate("/login");
+    }
+  }, [isSuccess, isError, dispatch, navigate, user]);
+
+  if (isLoading) {
+    return (
+      <div>
+        <Loader2 />
+      </div>
+    );
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
